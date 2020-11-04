@@ -395,20 +395,35 @@ if __name__=='__main__':
     
     # For multiple files
     # Already converted to string objects. Load from local
-    
     with open(folder_path + 'doc_dict.json') as f:
         doc_dict = json.load(f)
     
-    # Run this code to find author names and institute    
+    # Images texts in pdfs
+    # If already done and saved once, then use this
+    with open(folder_path + 'image_dict.json') as f:
+        image_dict = json.load(f)
+        
+    # Append values of these two dictionaries into once
+    doc_dict_final = {}
+    
+    # Assuming all keys are present
+    # Strings are to be appended using +
+    for fp, s in doc_dict.items():
+        doc_dict_final[fp] = image_dict.get(fp,'') + doc_dict[fp]
+    
+    # Run this code to find author names and institute  
+    # Uncomment to run
     info_dict = {}
     
-    for fp,s in doc_dict.items():
+    for fp,s in doc_dict_final.items():
         info_dict[fp] = author_names_institute(s, email_pattern)
         print('Processed {}'.format(fp))
-        
+    
     # If already done, then use this    
+    '''
     with open(folder_path + 'info_dict.json') as f:
         info_dict = json.load(f)
+    '''
     
     # Documents with author names present
     counter = 0
@@ -419,7 +434,7 @@ if __name__=='__main__':
     # Documents with institute name present
     counter2 = 0
     for fp, v in info_dict.items():
-        if v[1]!='':
+        if v[1]!='Others':
             counter2+=1
             
     # Save as json, in local. Uncomment to do so
@@ -437,7 +452,7 @@ if __name__=='__main__':
     start = time.time()
 
     # Run this line after uncommenting
-    #doc_comp_dict = find_companies(doc_dict, comp_list)
+    #doc_comp_dict = find_companies(doc_dict_final, comp_list)
     
     # If already done and saved once, then use this
     with open(folder_path + 'doc_comp_dict.json') as f:
@@ -475,7 +490,7 @@ if __name__=='__main__':
         
         final_dict[d] = (authors,institute,companies)
         
-        # Save as json, in local. Uncomment to do so
+    # Save as json, in local. Uncomment to do so
     '''
     with open(folder_path + 'final_dict.json', 'w') as f:
         json.dump(final_dict, f)
