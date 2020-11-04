@@ -67,6 +67,7 @@ def parse_pdfs(folder_path, n = None):
     Input parameters
     ------
     folder_path: folder path where your pdfs are stored
+    n: limitation on number of files parsed, if specified. default is None
     
     Output returns
     ------
@@ -85,15 +86,18 @@ def parse_pdfs(folder_path, n = None):
     #filepaths = [folder_path+'\\'+i for i in onlyfiles]
     #print(filepaths)
     
-    counter_f=0
+    counter=0
     doc_dict = {}
     
-    for i in onlyfiles:
-        fp = folder_path+'\\'+i
+    for filename in onlyfiles:
+        counter+=1  
+        
+        fp = folder_path+'\\' + filename
+        
         s = pdf_to_text(fp)
-        counter_f+=1    
-        print('file processed number',counter_f)
-        doc_dict.update({i: s})
+        print('file processed number',counter)
+        
+        doc_dict[filename] = s
     
     return doc_dict
 
