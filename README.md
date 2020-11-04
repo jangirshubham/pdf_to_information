@@ -1,4 +1,4 @@
-# pdf_to_extraction
+# pdf_to_information
 
 Extract information like author and keywords mentioned from pdfs
 
